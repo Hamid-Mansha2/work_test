@@ -27,6 +27,7 @@ jobs:
       script:
         - echo "Testing PostgreSQL connection..."
         - psql -c 'create database seiu503_member_app_test;' -U postgres
+#
 
 dist: focal
 os: linux
