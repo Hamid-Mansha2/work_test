@@ -1,11 +1,32 @@
 language: node_js
 node_js:
   - '16.10.0'
-dist: focal
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+services:
+  - postgresql
+
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.19.1
+  - export PATH="$HOME/.yarn/bin:$PATH"
+
 install:
   - yarn install
+
 script:
-  - echo "Running tests..."
-after_success:
-  - pip install awscli
-  - echo "AWS CLI installed"
+  - echo "Testing AWS SDK upgrade..."
+  
+
+jobs:
+  include:
+    - stage: Test PostgreSQL Connection
+      script:
+        - echo "Testing PostgreSQL connection..."
+        - psql -c 'create database seiu503_member_app_test;' -U postgres
+
+dist: focal
+os: linux
